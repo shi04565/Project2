@@ -8,21 +8,22 @@
     },
     "contributors": [
         {
-            "name": "",
-            "email": ""
+            "name": "Haoyi Shi",
+            "email": "shi04565@stthomas.edu"
         },
         {
-            "name": "",
-            "email": ""
+            "name": "Luca Comba",
+            "email": "comb6457@stthomas.edu"
         }
     ],
     "main": "server.js",
     "repository": {
         "type": "git",
-        "url": ""
+        "url": "https://github.com/shi04565/Project2"
     },
     "dependencies": {
         "express": "^4.17.1",
+        "mssql": "^5.1.0",
         "sqlite3": "^4.1.0"
     }
 }
