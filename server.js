@@ -192,7 +192,7 @@ app.get('/state/:selected_state', (req, res) => {
 					}
 					response = response.replace("US Energy Consumption",state+" Energy Consumption");
 					response = response.replace("coal_counts","coal_counts= ["+coal+" ]");
-					response = response.replace("natural_gas_count","natural_gas_count=[ "+gas+" ]");
+					response = response.replace("natural_gas_counts","natural_gas_counts=[ "+gas+" ]");
 					response = response.replace("nuclear_counts","nuclear_counts=[ "+nuclear+" ]");
 					response = response.replace("petroleum_counts","petroleum_counts=[ "+petroleum+" ]");
 					response = response.replace("renewable_counts","renewable_counts=[ "+renewable+" ]");
