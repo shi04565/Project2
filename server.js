@@ -67,10 +67,10 @@ app.get('/', (req, res) => {
 			response = response.replace("renewable_count","renewable_count="+renewable);
 			response = response.replace("<!-- Data to be inserted here -->",table_data);
 			WriteHtml(res, response);
-			}).catch((err) => {
+			});
+		}).catch((err) => {
 				Write404Error(res);
 			});	
-		});	
 		
 
 });
@@ -88,7 +88,7 @@ app.get('/year/:selected_year', (req, res) => {
 		let response = template;
 		if(parseInt(year)>2017 || parseInt(year)<1960){
 			res.writeHead(404, {'Content-Type': 'text/plain'});
-			res.write('Error: no data for year greater than 2017 or earilier than 1960"');
+			res.write('Error: no data for year greater than 2017 or earilier than 1960');
 			res.end();
 		}else{
 			db.all("SELECT * FROM Consumption WHERE year = ?",[year],function(err, rows) {
@@ -128,11 +128,11 @@ app.get('/year/:selected_year', (req, res) => {
 
 
 				WriteHtml(res, response);
-				}).catch((err) => {
+				})
+		}
+	}).catch((err) => {
 					Write404Error(res);
 				});
-		}
-	});
 
 });
 
@@ -167,7 +167,7 @@ app.get('/state/:selected_state', (req, res) => {
 				}
 				if(check == 0){
 					res.writeHead(404, {'Content-Type': 'text/plain'});
-					res.write('Error: no data for that state');
+					res.write('Error: no data for state ' + state + '. only available the 51 US states as abbriviation');
 					res.end();					
 				}else {
 					var coal = new Array(rows.length);
@@ -198,7 +198,7 @@ app.get('/state/:selected_state', (req, res) => {
 					response = response.replace("renewable_counts","renewable_counts=[ "+renewable+" ]");
 					response = response.replace("Yearly Snapshot", name+" Yearly Snapshot");
 					response = response.replace("<!-- Data to be inserted here -->",table);
-					response = response.replace('<img src="/images/noimage.jpg" alt="No Image" width="250" height="auto" />', '<img src="/images/'+state+'.png" alt="No Image" width="250" height="auto" />');
+					response = response.replace('<img src="/images/noimage.jpg" alt="No Image" width="250" height="auto" />', '<img src="/images/'+state+'.png" alt="'+name+' flag'+'" width="250" height="auto" />');
 					if(state == "AK"){
 						response = response.replace('<a class="prev_next" href="">XX</a>' , '<a class="prev_next" href="http://localhost:8000/state/WY">Prev WY</a>');
 						response = response.replace('<a class="prev_next" href="">XX</a>' , '<a class="prev_next" href="http://localhost:8000/state/'+names[mark+1].state_abbreviation+'">Next '+names[mark+1].state_abbreviation+'</a>');	
@@ -213,10 +213,10 @@ app.get('/state/:selected_state', (req, res) => {
 					WriteHtml(res, response);
 				}
 				});		
-		}).catch((err)=>{
+		})
+	}).catch((err)=>{
 			Write404Error();
 		});
-	});
 });
 
 // GET request handler for '/energy-type/*'
@@ -286,7 +286,7 @@ app.get('/energy-type/:selected_energy_type', (req, res) => {
 					}
 					table = table+ "<td>"+total+"</td></tr>\n";
 				}
-				response = response.replace('<img src="/images/noimage.jpg" alt="No Image" width="250" height="auto" />', '<img src="/images/'+energy+'.jpg" alt="No Image" width="250" height="auto" />');
+				response = response.replace('<img src="/images/noimage.jpg" alt="No Image" width="250" height="auto" />', '<img src="/images/'+energy+'.jpg" alt="'+energy+'" width="250" height="auto" />');
 				response = response.replace("US Energy Consumption","US "+energy[0].toUpperCase()+energy.substring(1,energy.length)+" Consumption");
 				response = response.replace("<!-- Data to be inserted here -->",table);
 				response = response.replace("var energy_type",'var energy_type="'+energy+'"');
@@ -294,16 +294,16 @@ app.get('/energy-type/:selected_energy_type', (req, res) => {
 				response = response.replace("Consumption Snapshot", energy+" Consumption Snapshot");			
 					
 			WriteHtml(res, response);
-			}).catch((err) => {
-				Write404Error(res);
 			});
 		}else{
 			res.writeHead(404, {'Content-Type': 'text/plain'});
-			res.write('Error: no data for that energy');
+			res.write('Error: no data for '+energy);
 			res.end();			
 
 		}	
-	});
+	}).catch((err) => {
+				Write404Error(res);
+			});
 
 });
 
